@@ -109,8 +109,8 @@ class DecisionTree(Tree):
             best_feature = features[best_feature_index]
 
 
-            #  = Tree()
-            self.create_node(best_feature, best_feature)
+            tree = Tree()
+            tree.create_node(best_feature, best_feature)
             # self.create_node(node)
             sub_features = features.drop(best_feature)
             self.depth +=1
@@ -121,8 +121,11 @@ class DecisionTree(Tree):
                 sub_data = data.where(data[best_feature] == value).dropna()
 
                 sub_tree = self.build_tree(sub_data,original_data,sub_features,target_col,parent_node_value)
+                if sub_tree is isinstance(sub_tree,Tree):
 
-                self.paste(value, sub_tree)
+                    tree.paste(value,best_feature, sub_tree)
+                else:
+                    tree.create_node(sub_tree, sub_tree, parent = value)
             return tree
 
         # get best feature, create that node, then iterate through all the values of that feature and create a new node for each value. 
